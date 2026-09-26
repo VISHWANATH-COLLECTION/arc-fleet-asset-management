@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ARC Diesel Consumption</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -21,7 +22,7 @@
       justify-content: space-between;
       align-items: center;
     }
-    .brand { font-size: 24px; font-weight: 700; }
+    .brand { font-size: 24px; font-weight: 700; cursor: pointer; }
     .nav a {
       color: white; text-decoration: none; margin-left: 18px; font-size: 14px;
     }
@@ -74,6 +75,24 @@
       font-weight: 700;
       cursor: pointer;
     }
+    .export-buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 15px;
+    }
+    .export-btn {
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      color: white;
+    }
+    .btn-pdf { background: #dc2626; }
+    .btn-email { background: #f59e0b; }
+    .btn-whatsapp { background: #10b981; }
     table {
       width: 100%;
       border-collapse: collapse;
@@ -138,13 +157,13 @@
       border-color: #2563eb !important;
     }
     @media (max-width: 768px) {
-      .layout, .form-grid, .filter-row, .summary-row { grid-template-columns: 1fr; }
+      .layout, .form-grid, .filter-row, .summary-row, .export-buttons { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
   <div class="topbar">
-    <div class="brand">ARC</div>
+    <div class="brand" onclick="window.location.href='index.html'">ARC</div>
     <div class="nav">
       <a href="index.html">Dashboard</a>
       <a href="diesel.html">Diesel</a>
@@ -241,7 +260,7 @@
           </div>
         </div>
 
-        <table>
+        <table id="reportTableContainer">
           <thead>
             <tr>
               <th>Date</th>
@@ -302,6 +321,12 @@
             <div class="summary-value" id="totalBalance">+183</div>
           </div>
         </div>
+
+        <div class="export-buttons">
+          <button class="export-btn btn-pdf" onclick="exportPDF()">📄 Export PDF</button>
+          <button class="export-btn btn-email" onclick="sendEmail()">📧 Send Email</button>
+          <button class="export-btn btn-whatsapp" onclick="sendWhatsApp()">💬 Share WhatsApp</button>
+        </div>
       </div>
     </div>
   </div>
@@ -344,7 +369,6 @@
 
       dieselData.push(entry);
       alert('Diesel entry saved successfully!');
-      document.querySelector('form') ? document.querySelector('form').reset() : null;
       generateReport();
     }
 
@@ -385,6 +409,45 @@
       document.getElementById('totalConsumed').innerText = totalDiesel;
       document.getElementById('totalClosing').innerText = totalClosing;
       document.getElementById('totalBalance').innerText = '+' + totalClosing;
+    }
+
+    function exportPDF() {
+      const element = document.getElementById('reportTableContainer');
+      const opt = {
+        margin: 10,
+        filename: 'diesel-report.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { orientation: 'landscape', unit: 'mm', format: 'a4' }
+      };
+      html2pdf().set(opt).from(element).save();
+      alert('PDF exported successfully!');
+    }
+
+    function sendEmail() {
+      const fromDate = document.getElementById('fromDate').value;
+      const toDate = document.getElementById('toDate').value;
+      const email = prompt('Enter recipient email address:', 'admin@arc.com');
+      
+      if (email) {
+        alert(`✅ Report will be sent to ${email}\n\nDate Range: ${fromDate} to ${toDate}\n\n(In production, this will send via email service)`);
+      }
+    }
+
+    function sendWhatsApp() {
+      const fromDate = document.getElementById('fromDate').value;
+      const toDate = document.getElementById('toDate').value;
+      const totalConsumed = document.getElementById('totalConsumed').innerText;
+      const totalBalance = document.getElementById('totalBalance').innerText;
+      
+      const message = `📊 *ARC Diesel Consumption Report*\n\n📅 Period: ${fromDate} to ${toDate}\n⛽ Total Consumed: ${totalConsumed}L\n💾 Balance: ${totalBalance}L\n\nReport generated from ARC Fleet Management System`;
+      
+      const phoneNumber = prompt('Enter WhatsApp number (with country code)', '+91');
+      
+      if (phoneNumber) {
+        const whatsappUrl = `https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
+      }
     }
   </script>
 </body>
