@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ARC Diesel Consumption</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f8fafc;
+      color: #1f2937;
+    }
+    .topbar {
+      background: #0f172a;
+      color: white;
+      padding: 18px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand { font-size: 24px; font-weight: 700; }
+    .nav a {
+      color: white; text-decoration: none; margin-left: 18px; font-size: 14px;
+    }
+    .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+    .page-header {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .page-header h2 { margin: 0; }
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 20px;
+    }
+    .panel {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+      border: 1px solid #e5e7eb;
+    }
+    .panel h3 { margin-top: 0; }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(180px, 1fr));
+      gap: 16px;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 8px;
+      color: #475569;
+      font-weight: 600;
+    }
+    input, select, textarea, button {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+    textarea { min-height: 80px; resize: vertical; }
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    th, td {
+      border-bottom: 1px solid #e2e8f0;
+      text-align: left;
+      padding: 12px 10px;
+    }
+    th {
+      background: #f8fafc;
+      color: #334155;
+      font-weight: 600;
+    }
+    .filter-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .summary-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 2px solid #e2e8f0;
+    }
+    .summary-box {
+      background: #f0f9ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+    }
+    .summary-label {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .summary-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1e40af;
+      margin-top: 5px;
+    }
+    .select2-container--default .select2-selection--single {
+      border: 1px solid #cbd5e1 !important;
+      border-radius: 10px !important;
+      height: auto !important;
+      padding: 0 !important;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+      padding: 11px 12px !important;
+      line-height: 1 !important;
+      font-size: 14px !important;
+    }
+    .select2-container--default.select2-container--focus .select2-selection--single {
+      border-color: #2563eb !important;
+    }
+    @media (max-width: 768px) {
+      .layout, .form-grid, .filter-row, .summary-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">ARC</div>
+    <div class="nav">
+      <a href="index.html">Dashboard</a>
+      <a href="diesel.html">Diesel</a>
+      <a href="material.html">Material</a>
+      <a href="loaded-vehicles.html">Loaded Vehicles</a>
+      <a href="masters.html">Masters</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="page-header">
+      <h2>Diesel Consumption Module</h2>
+    </div>
+
+    <div class="layout">
+      <div class="panel">
+        <h3>Add Diesel Entry</h3>
+        <div class="form-grid">
+          <div>
+            <label>Vehicle Number</label>
+            <select id="vehicleSelect" class="searchable">
+              <option value="">Select Vehicle</option>
+              <option value="DL-01-AB-1234">DL-01-AB-1234</option>
+              <option value="DL-02-CD-5678">DL-02-CD-5678</option>
+              <option value="MH-12-XX-9999">MH-12-XX-9999</option>
+            </select>
+          </div>
+          <div>
+            <label>Driver Name</label>
+            <select id="driverSelect" class="searchable">
+              <option value="">Select Driver</option>
+              <option value="Rakesh Kumar">Rakesh Kumar</option>
+              <option value="Amit Verma">Amit Verma</option>
+              <option value="Sunil Singh">Sunil Singh</option>
+              <option value="Navin Sharma">Navin Sharma</option>
+            </select>
+          </div>
+          <div>
+            <label>Date</label>
+            <input type="date" id="entryDate" value="2026-09-26" />
+          </div>
+          <div>
+            <label>Site / Location</label>
+            <select id="siteSelect" class="searchable">
+              <option value="">Select Site</option>
+              <option value="Site A">Site A</option>
+              <option value="Site B">Site B</option>
+              <option value="Warehouse 1">Warehouse 1</option>
+              <option value="ARC Main Yard">ARC Main Yard</option>
+            </select>
+          </div>
+          <div>
+            <label>Diesel (Liters)</label>
+            <input type="number" id="dieselQty" value="60" />
+          </div>
+          <div>
+            <label>Odometer Reading</label>
+            <input type="number" id="odometerReading" value="15640" />
+          </div>
+          <div style="grid-column: 1 / -1;">
+            <label>Remarks</label>
+            <textarea id="remarks">Regular machine movement and site work.</textarea>
+          </div>
+          <div style="grid-column: 1 / -1;">
+            <button type="button" onclick="addDieselEntry()">Save Diesel Entry</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Report / Consumption View</h3>
+
+        <div class="filter-row">
+          <div>
+            <label>From Date</label>
+            <input type="date" id="fromDate" value="2026-09-01" />
+          </div>
+          <div>
+            <label>To Date</label>
+            <input type="date" id="toDate" value="2026-09-30" />
+          </div>
+          <div>
+            <label>Vehicle</label>
+            <select id="reportVehicle" class="searchable">
+              <option value="">All Vehicles</option>
+              <option value="DL-01-AB-1234">DL-01-AB-1234</option>
+              <option value="DL-02-CD-5678">DL-02-CD-5678</option>
+              <option value="MH-12-XX-9999">MH-12-XX-9999</option>
+            </select>
+          </div>
+          <div>
+            <label>Filter</label>
+            <button type="button" onclick="generateReport()" style="background:#0f172a;">Apply Report</button>
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Vehicle</th>
+              <th>Driver</th>
+              <th>Opening (L)</th>
+              <th>Diesel (L)</th>
+              <th>Closing (L)</th>
+              <th>Balance (L)</th>
+            </tr>
+          </thead>
+          <tbody id="reportTable">
+            <tr>
+              <td>2026-09-10</td>
+              <td>DL-01-AB-1234</td>
+              <td>Rakesh Kumar</td>
+              <td>100</td>
+              <td>60</td>
+              <td>40</td>
+              <td>+40</td>
+            </tr>
+            <tr>
+              <td>2026-09-12</td>
+              <td>DL-02-CD-5678</td>
+              <td>Amit Verma</td>
+              <td>120</td>
+              <td>75</td>
+              <td>45</td>
+              <td>+45</td>
+            </tr>
+            <tr>
+              <td>2026-09-18</td>
+              <td>MH-12-XX-9999</td>
+              <td>Sunil Singh</td>
+              <td>150</td>
+              <td>52</td>
+              <td>98</td>
+              <td>+98</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="summary-row">
+          <div class="summary-box">
+            <div class="summary-label">Total Opening</div>
+            <div class="summary-value" id="totalOpening">370</div>
+          </div>
+          <div class="summary-box">
+            <div class="summary-label">Total Consumed</div>
+            <div class="summary-value" id="totalConsumed">187</div>
+          </div>
+          <div class="summary-box">
+            <div class="summary-label">Total Closing</div>
+            <div class="summary-value" id="totalClosing">183</div>
+          </div>
+          <div class="summary-box">
+            <div class="summary-label">Overall Balance</div>
+            <div class="summary-value" id="totalBalance">+183</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+  <script>
+    // Initialize Select2 for searchable dropdowns
+    $(document).ready(function() {
+      $('.searchable').select2({
+        placeholder: 'Search and select...',
+        allowClear: true,
+        width: '100%'
+      });
+    });
+
+    // Sample data storage
+    let dieselData = [
+      { date: '2026-09-10', vehicle: 'DL-01-AB-1234', driver: 'Rakesh Kumar', site: 'Site A', opening: 100, diesel: 60, closing: 40, remarks: 'Regular movement' },
+      { date: '2026-09-12', vehicle: 'DL-02-CD-5678', driver: 'Amit Verma', site: 'Site B', opening: 120, diesel: 75, closing: 45, remarks: 'Site work' },
+      { date: '2026-09-18', vehicle: 'MH-12-XX-9999', driver: 'Sunil Singh', site: 'Warehouse 1', opening: 150, diesel: 52, closing: 98, remarks: 'Transport' }
+    ];
+
+    function addDieselEntry() {
+      const entry = {
+        date: document.getElementById('entryDate').value,
+        vehicle: document.getElementById('vehicleSelect').value,
+        driver: document.getElementById('driverSelect').value,
+        site: document.getElementById('siteSelect').value,
+        opening: 100,
+        diesel: parseFloat(document.getElementById('dieselQty').value),
+        closing: 100 - parseFloat(document.getElementById('dieselQty').value),
+        remarks: document.getElementById('remarks').value
+      };
+
+      if (!entry.vehicle || !entry.driver) {
+        alert('Please fill all required fields');
+        return;
+      }
+
+      dieselData.push(entry);
+      alert('Diesel entry saved successfully!');
+      document.querySelector('form') ? document.querySelector('form').reset() : null;
+      generateReport();
+    }
+
+    function generateReport() {
+      const fromDate = document.getElementById('fromDate').value;
+      const toDate = document.getElementById('toDate').value;
+      const filterVehicle = document.getElementById('reportVehicle').value;
+
+      let filtered = dieselData.filter(item => {
+        const itemDate = new Date(item.date);
+        const from = new Date(fromDate);
+        const to = new Date(toDate);
+        return itemDate >= from && itemDate <= to && (!filterVehicle || item.vehicle === filterVehicle);
+      });
+
+      let html = '';
+      let totalOpening = 0, totalDiesel = 0, totalClosing = 0;
+
+      filtered.forEach(item => {
+        html += `
+          <tr>
+            <td>${item.date}</td>
+            <td>${item.vehicle}</td>
+            <td>${item.driver}</td>
+            <td>${item.opening}</td>
+            <td>${item.diesel}</td>
+            <td>${item.closing}</td>
+            <td>+${item.closing}</td>
+          </tr>
+        `;
+        totalOpening += item.opening;
+        totalDiesel += item.diesel;
+        totalClosing += item.closing;
+      });
+
+      document.getElementById('reportTable').innerHTML = html;
+      document.getElementById('totalOpening').innerText = totalOpening;
+      document.getElementById('totalConsumed').innerText = totalDiesel;
+      document.getElementById('totalClosing').innerText = totalClosing;
+      document.getElementById('totalBalance').innerText = '+' + totalClosing;
+    }
+  </script>
+</body>
+</html>
