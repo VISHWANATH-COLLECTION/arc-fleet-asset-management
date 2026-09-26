@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ARC Masters</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f8fafc;
+      color: #1f2937;
+    }
+    .topbar {
+      background: #0f172a;
+      color: white;
+      padding: 18px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand { font-size: 24px; font-weight: 700; cursor: pointer; }
+    .nav a {
+      color: white; text-decoration: none; margin-left: 18px; font-size: 14px;
+    }
+    .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+    .page-header {
+      background: #f1f5f9;
+      border: 1px solid #dbeafe;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .page-header h2 { margin: 0; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .panel {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+      border: 1px solid #e5e7eb;
+    }
+    .panel h3 { margin-top: 0; }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(180px, 1fr));
+      gap: 16px;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 8px;
+      color: #475569;
+      font-weight: 600;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+    button {
+      background: #334155;
+      color: white;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    th, td {
+      border-bottom: 1px solid #e2e8f0;
+      text-align: left;
+      padding: 12px 10px;
+    }
+    th {
+      background: #f8fafc;
+      color: #334155;
+      font-weight: 600;
+    }
+    .action-btn {
+      padding: 6px 10px;
+      font-size: 12px;
+      margin-right: 5px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .delete-btn {
+      background: #dc2626;
+    }
+    .select2-container--default .select2-selection--single {
+      border: 1px solid #cbd5e1 !important;
+      border-radius: 10px !important;
+      height: auto !important;
+      padding: 0 !important;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+      padding: 11px 12px !important;
+      line-height: 1 !important;
+      font-size: 14px !important;
+    }
+    .select2-container--default.select2-container--focus .select2-selection--single {
+      border-color: #2563eb !important;
+    }
+    @media (max-width: 768px) {
+      .grid, .form-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand" onclick="window.location.href='index.html'">ARC</div>
+    <div class="nav">
+      <a href="index.html">Dashboard</a>
+      <a href="diesel.html">Diesel</a>
+      <a href="material.html">Material</a>
+      <a href="loaded-vehicles.html">Loaded Vehicles</a>
+      <a href="masters.html">Masters</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="page-header">
+      <h2>Master Data Management</h2>
+    </div>
+
+    <div class="grid">
+      <!-- MASTER 1: VEHICLE -->
+      <div class="panel">
+        <h3>Add Vehicle</h3>
+        <div class="form-grid">
+          <div style="grid-column: 1 / -1;">
+            <label>Vehicle Number</label>
+            <input type="text" id="vehicleNumber" placeholder="e.g., DL-03-EF-4567" />
+          </div>
+          <div style="grid-column: 1 / -1;">
+            <label>Vehicle Type</label>
+            <select id="vehicleType" class="searchable">
+              <option value="">Select Type</option>
+              <option value="Truck">Truck</option>
+              <option value="Tipper">Tipper</option>
+              <option value="Trailer">Trailer</option>
+              <option value="Dumper">Dumper</option>
+            </select>
+          </div>
+          <div style="grid-column: 1 / -1;">
+            <label>Assigned Driver</label>
+            <select id="assignedDriver" class="searchable">
+              <option value="">Select Driver</option>
+            </select>
+          </div>
+          <div style="grid-column: 1 / -1;">
+            <button type="button" onclick="addVehicle()">Save Vehicle</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Vehicle Master</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Vehicle No.</th>
+              <th>Type</th>
+              <th>Driver</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="vehicleTable">
+            <tr>
+              <td>DL-01-AB-1234</td>
+              <td>Tipper</td>
+              <td>Rakesh Kumar</td>
+              <td><button class="action-btn">Edit</button><button class="action-btn delete-btn">Delete</button></td>
+            </tr>
+            <tr>
+              <td>DL-02-CD-5678</td>
+              <td>Truck</td>
+              <td>Amit Verma</td>
+              <td><button class="action-btn">Edit</button><button class="action-btn delete-btn">Delete</button></td>
+            </tr>
+            <tr>
+              <td>MH-12-XX-9999</td>
+              <td>Trailer</td>
+              <td>Sunil Singh</td>
+              <td><button class="action-btn">Edit</button><button class="action-btn delete-btn">Delete</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- MASTER 2: DRIVER NAME -->
+      <div class="panel">
+        <h3>Add Driver</h3>
+        <div class="form-grid">
+          <div style="grid-column: 1 / -1;">
+            <label>Driver Name</label>
+            <input type="text" id="driverName" placeholder="e.g., John Doe" />
+          </div>
+          <div style="grid-column: 1 / -1;">
+            <label>Mobile Number</label>
+            <input type="text" id="driverMobile" placeholder="e.g., +91 9876543210" />
+          </div>
+          <div style="grid-column: 1 / -1;">
+            <label>License Number</label>
+            <input type="text" id="driverLicense" placeholder="e.g., DL0120090000001" />
+          </div>
+          <div style="grid-column: 1 / -1;">
+            <label>Status</label>
+            <select id="driverStatus" class="searchable">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+              <option value="On Leave">On Leave</option>
+            </select>
+          </div>
+          <div style="grid-column: 1 / -1;">
+            <button type="button" onclick="addDriver()">Save Driver</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Driver Master</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Driver Name</th>
+              <th>Mobile</th>
+              <th>License</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="driverTable">
+            <tr>
+              <td>Rakesh Kumar</td>
+              <td>+91 9876543210</td>
+              <td>DL0120090000001</td>
+              <td><span style="background:#dcfce7; padding:4px 8px; border-radius:6px; font-size:12px;">Active</span></td>
+              <td><button class="action-btn">Edit</button><button class="action-btn delete-btn">Delete</button></td>
+            </tr>
+            <tr>
+              <td>Amit Verma</td>
+              <td>+91 9876543211</td>
+              <td>DL0120090000002</td>
+              <td><span style="background:#dcfce7; padding:4px 8px; border-radius:6px; font-size:12px;">Active</span></td>
+              <td><button class="action-btn">Edit</button><button class="action-btn delete-btn">Delete</button></td>
+            </tr>
+            <tr>
+              <td>Sunil Singh</td>
+              <td>+91 9876543212</td>
+              <td>DL0120090000003</td>
+              <td><span style="background:#dcfce7; padding:4px 8px; border-radius:6px; font-size:12px;">Active</span></td>
+              <td><button class="action-btn">Edit</button><button class="action-btn delete-btn">Delete</button></td>
+            </tr>
+            <tr>
+              <td>Navin Sharma</td>
+              <td>+91 9876543213</td>
+              <td>DL0120090000004</td>
+              <td><span style="background:#fef3c7; padding:4px 8px; border-radius:6px; font-size:12px;">On Leave</span></td>
+              <td><button class="action-btn">Edit</button><button class="action-btn delete-btn">Delete</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- MASTER 3: MATERIAL -->
+      <div class="panel">
+        <h3>Add Material</h3>
+        <div class="form-grid">
+          <div style="grid-column: 1 / -1;">
+            <label>Material Name</label>
+            <input type="text" id="materialName" placeholder="e.g., River Sand" />
+          </div>
+          <div style="grid-column: 1 / -1;">
+            <label>Unit</label>
+            <select id="materialUnit" class="searchable">
+              <option value="">Select Unit</option>
+              <option value="Ton">Ton</option>
+              <option value="Bag">Bag</option>
+              <option value="Cubic Meter">Cubic Meter</option>
+              <option value="Liter">Liter</option>
+            </select>
+          </div>
+          <div style="grid-column: 1 / -1;">
+            <button type="button" onclick="addMaterial()">Save Material</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Material Master</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Material</th>
+              <th>Unit</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="materialTable">
+            <tr><td>Sand</td><td>Ton</td><td><button class="action-btn">Edit</button><button class="action-btn delete-btn">Delete</button></td></tr>
+            <tr><td>Cement</td><td>Bag</td><td><button class="action-btn">Edit</button><button class="action-btn delete-btn">Delete</button></td></tr>
+            <tr><td>Steel</td><td>Ton</td><td><button class="action-btn">Edit</button><button class="action-btn delete-btn">Delete</button></td></tr>
+            <tr><td>Aggregate</td><td>Cubic Meter</td><td><button class="action-btn">Edit</button><button class="action-btn delete-btn">Delete</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- MASTER 4: SITE -->
+      <div class="panel" style="grid-column: 1 / -1;">
+        <h3>Add Site</h3>
+        <div class="form-grid">
+          <div>
+            <label>Site Name</label>
+            <input type="text" id="siteName" placeholder="e.g., Site D" />
+          </div>
+          <div>
+            <label>Location</label>
+            <input type="text" id="siteLocation" placeholder="e.g., Bhopal Road" />
+          </div>
+          <div style="grid-column: 1 / -1;">
+            <button type="button" onclick="addSite()">Save Site</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="grid-column: 1 / -1;">
+        <h3>Site Master</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Site</th>
+              <th>Location</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="siteTable">
+            <tr><td>Site A</td><td>Industrial Area</td><td><button class="action-btn">Edit</button><button class="action-btn delete-btn">Delete</button></td></tr>
+            <tr><td>Site B</td><td>North City</td><td><button class="action-btn">Edit</button><button class="action-btn delete-btn">Delete</button></td></tr>
+            <tr><td>Site C</td><td>East Highway</td><td><button class="action-btn">Edit</button><button class="action-btn delete-btn">Delete</button></td></tr>
+            <tr><td>ARC Main Yard</td><td>Head Office</td><td><button class="action-btn">Edit</button><button class="action-btn delete-btn">Delete</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+  <script>
+    // Initialize Select2 for searchable dropdowns
+    $(document).ready(function() {
+      $('.searchable').select2({
+        placeholder: 'Search and select...',
+        allowClear: true,
+        width: '100%'
+      });
+      
+      // Populate driver dropdown
+      updateDriverDropdown();
+    });
+
+    // Sample data storage
+    let drivers = [
+      { name: 'Rakesh Kumar', mobile: '+91 9876543210', license: 'DL0120090000001', status: 'Active' },
+      { name: 'Amit Verma', mobile: '+91 9876543211', license: 'DL0120090000002', status: 'Active' },
+      { name: 'Sunil Singh', mobile: '+91 9876543212', license: 'DL0120090000003', status: 'Active' },
+      { name: 'Navin Sharma', mobile: '+91 9876543213', license: 'DL0120090000004', status: 'On Leave' }
+    ];
+
+    let vehicles = [
+      { number: 'DL-01-AB-1234', type: 'Tipper', driver: 'Rakesh Kumar' },
+      { number: 'DL-02-CD-5678', type: 'Truck', driver: 'Amit Verma' },
+      { number: 'MH-12-XX-9999', type: 'Trailer', driver: 'Sunil Singh' }
+    ];
+
+    let materials = [
+      { name: 'Sand', unit: 'Ton' },
+      { name: 'Cement', unit: 'Bag' },
+      { name: 'Steel', unit: 'Ton' },
+      { name: 'Aggregate', unit: 'Cubic Meter' }
+    ];
+
+    let sites = [
+      { name: 'Site A', location: 'Industrial Area' },
+      { name: 'Site B', location: 'North City' },
+      { name: 'Site C', location: 'East Highway' },
+      { name: 'ARC Main Yard', location: 'Head Office' }
+    ];
+
+    function updateDriverDropdown() {
+      const select = document.getElementById('assignedDriver');
+      select.innerHTML = '<option value="">Select Driver</option>';
+      drivers.forEach(driver => {
+        const option = document.createElement('option');
+        option.value = driver.name;
+        option.textContent = driver.name;
+        select.appendChild(option);
+      });
+      // Reinitialize Select2
+      $('#assignedDriver').select2({
+        placeholder: 'Search and select...',
+        allowClear: true,
+        width: '100%'
+      });
+    }
+
+    function addDriver() {
+      const driverName = document.getElementById('driverName').value;
+      const driverMobile = document.getElementById('driverMobile').value;
+      const driverLicense = document.getElementById('driverLicense').value;
+      const driverStatus = document.getElementById('driverStatus').value;
+
+      if (!driverName || !driverMobile || !driverLicense) {
+        alert('Please fill all required fields');
+        return;
+      }
+
+      const newDriver = { name: driverName, mobile: driverMobile, license: driverLicense, status: driverStatus };
+      drivers.push(newDriver);
+
+      const statusColor = driverStatus === 'Active' ? '#dcfce7' : driverStatus === 'On Leave' ? '#fef3c7' : '#fee2e2';
+      const row = `
+        <tr>
+          <td>${driverName}</td>
+          <td>${driverMobile}</td>
+          <td>${driverLicense}</td>
+          <td><span style="background:${statusColor}; padding:4px 8px; border-radius:6px; font-size:12px;">${driverStatus}</span></td>
+          <td><button class="action-btn">Edit</button><button class="action-btn delete-btn">Delete</button></td>
+        </tr>
+      `;
+      document.getElementById('driverTable').insertAdjacentHTML('beforeend', row);
+
+      // Clear form
+      document.getElementById('driverName').value = '';
+      document.getElementById('driverMobile').value = '';
+      document.getElementById('driverLicense').value = '';
+      document.getElementById('driverStatus').value = 'Active';
+
+      // Update driver dropdown in vehicle form
+      updateDriverDropdown();
+
+      alert('Driver saved successfully!');
+    }
+
+    function addVehicle() {
+      const vehicleNumber = document.getElementById('vehicleNumber').value;
+      const vehicleType = document.getElementById('vehicleType').value;
+      const assignedDriver = document.getElementById('assignedDriver').value;
+
+      if (!vehicleNumber || !vehicleType || !assignedDriver) {
+        alert('Please fill all required fields');
+        return;
+      }
+
+      const row = `
+        <tr>
+          <td>${vehicleNumber}</td>
+          <td>${vehicleType}</td>
+          <td>${assignedDriver}</td>
+          <td><button class="action-btn">Edit</button><button class="action-btn delete-btn">Delete</button></td>
+        </tr>
+      `;
+      document.getElementById('vehicleTable').insertAdjacentHTML('beforeend', row);
+
+      document.getElementById('vehicleNumber').value = '';
+      document.getElementById('vehicleType').value = '';
+      document.getElementById('assignedDriver').value = '';
+
+      alert('Vehicle saved successfully!');
+    }
+
+    function addMaterial() {
+      const materialName = document.getElementById('materialName').value;
+      const materialUnit = document.getElementById('materialUnit').value;
+
+      if (!materialName || !materialUnit) {
+        alert('Please fill all required fields');
+        return;
+      }
+
+      const row = `
+        <tr>
+          <td>${materialName}</td>
+          <td>${materialUnit}</td>
+          <td><button class="action-btn">Edit</button><button class="action-btn delete-btn">Delete</button></td>
+        </tr>
+      `;
+      document.getElementById('materialTable').insertAdjacentHTML('beforeend', row);
+
+      document.getElementById('materialName').value = '';
+      document.getElementById('materialUnit').value = '';
+
+      alert('Material saved successfully!');
+    }
+
+    function addSite() {
+      const siteName = document.getElementById('siteName').value;
+      const siteLocation = document.getElementById('siteLocation').value;
+
+      if (!siteName || !siteLocation) {
+        alert('Please fill all required fields');
+        return;
+      }
+
+      const row = `
+        <tr>
+          <td>${siteName}</td>
+          <td>${siteLocation}</td>
+          <td><button class="action-btn">Edit</button><button class="action-btn delete-btn">Delete</button></td>
+        </tr>
+      `;
+      document.getElementById('siteTable').insertAdjacentHTML('beforeend', row);
+
+      document.getElementById('siteName').value = '';
+      document.getElementById('siteLocation').value = '';
+
+      alert('Site saved successfully!');
+    }
+  </script>
+</body>
+</html>
