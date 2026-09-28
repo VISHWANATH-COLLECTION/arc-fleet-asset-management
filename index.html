@@ -1,1 +1,905 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ARC ERP | Dashboard</title><style>:root{--n:#17365d;--b:#2f75b5;--bg:#eef1f4;--line:#c5d0da}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#263746;font:13px "Segoe UI",Tahoma,Arial,sans-serif}.top{height:52px;background:var(--n);color:#fff;display:flex;align-items:center;padding:0 22px;border-bottom:3px solid #5b9bd5}.brand{font-size:20px;font-weight:700;margin-right:30px}.nav{display:flex;height:100%}.nav a{color:#fff;text-decoration:none;padding:17px 13px;border-left:1px solid #355579}.nav a:hover,.nav a.active{background:var(--b)}.user{margin-left:auto;color:#dbe8f5}.shell{display:flex;min-height:calc(100vh - 52px)}aside{width:205px;background:#e2e8ef;border-right:1px solid #b9c5d0;padding:14px 0}.side-title{padding:8px 16px;color:#536575;text-transform:uppercase;font-weight:700;font-size:11px}.side-link{display:block;padding:11px 16px;color:#30485d;text-decoration:none;border-bottom:1px solid #d0d8df}.side-link:hover,.side-link.active{background:#c9dced;border-left:4px solid var(--b);padding-left:12px}.main{flex:1;padding:18px 22px}.crumb{color:#667786;margin-bottom:12px}.title,.panel{background:#fff;border:1px solid var(--line);border-radius:2px}.title{border-left:5px solid var(--b);padding:12px 15px;margin-bottom:14px}.title h1{font-size:20px;margin:0 0 4px;font-weight:600}.title small{color:#667786}.toolbar{background:#d9e6f2;border:1px solid #b6c9db;padding:9px 12px;color:var(--n);font-weight:700;margin-bottom:14px}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:#fff;border:1px solid var(--line);padding:18px}.card .label{color:#667786;text-transform:uppercase;font-size:11px;font-weight:700}.card .num{font-size:30px;font-weight:600;color:var(--n);margin:8px 0}.card a{color:var(--b);text-decoration:none;font-weight:600}.grid{display:grid;grid-template-columns:1.2fr 1fr;gap:14px;margin-top:14px}.panel h3{margin:0;padding:10px 12px;background:linear-gradient(#f8fafc,#dce7f1);border-bottom:1px solid var(--line);font-size:14px;color:var(--n)}.panel-body{padding:13px}table{width:100%;border-collapse:collapse}th,td{padding:8px;border:1px solid #d0d9e1;text-align:left}th{background:#d9e6f2;color:var(--n)}tbody tr:nth-child(even) td{background:#f6f8fa}@media(max-width:900px){aside{display:none}.cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}@media(max-width:520px){.nav a:nth-child(n+3){display:none}.main{padding:12px}.cards{grid-template-columns:1fr}}</style></head><body><header class="top"><div class="brand">ARC ERP</div><nav class="nav"><a class="active" href="index.html">Dashboard</a><a href="diesel.html">Diesel</a><a href="material.html">Material</a><a href="loaded-vehicles.html">Loaded Vehicles</a><a href="masters.html">Masters</a></nav><div class="user">Administrator ▾</div></header><div class="shell"><aside><div class="side-title">Operations</div><a class="side-link active" href="index.html">Control Dashboard</a><a class="side-link" href="diesel.html">Diesel Consumption</a><a class="side-link" href="material.html">Material Consumption</a><a class="side-link" href="loaded-vehicles.html">Vehicle Dispatch</a><div class="side-title">Administration</div><a class="side-link" href="masters.html">Master Data</a></aside><main class="main"><div class="crumb">Home / Dashboard</div><section class="title"><h1>ARC Fleet & Asset Management</h1><small>Operational overview and quick access to daily ERP activities.</small></section><div class="toolbar">Dashboard Summary <span style="float:right;font-weight:400">26-Sep-2026</span></div><div class="cards"><div class="card"><div class="label">Total Vehicles</div><div class="num">48</div><a href="masters.html">View vehicle master →</a></div><div class="card"><div class="label">Diesel Entries</div><div class="num">176</div><a href="diesel.html">Open diesel register →</a></div><div class="card"><div class="label">Material Entries</div><div class="num">214</div><a href="material.html">Open material register →</a></div><div class="card"><div class="label">Active Sites</div><div class="num">12</div><a href="masters.html#site">View site master →</a></div></div><div class="grid"><section class="panel"><h3>Recent Vehicle Dispatch</h3><div class="panel-body"><table><thead><tr><th>Date</th><th>Vehicle</th><th>Material</th><th>Destination</th></tr></thead><tbody><tr><td>26-Sep-2026</td><td>DL-01-AB-1234</td><td>Sand</td><td>Site A</td></tr><tr><td>25-Sep-2026</td><td>DL-02-CD-5678</td><td>Cement</td><td>Site B</td></tr><tr><td>24-Sep-2026</td><td>MH-12-XX-9999</td><td>Steel</td><td>Site C</td></tr></tbody></table></div></section><section class="panel"><h3>Quick Actions</h3><div class="panel-body"><p><a href="diesel.html">+ Enter diesel consumption</a></p><p><a href="material.html">+ Enter material consumption</a></p><p><a href="loaded-vehicles.html">+ Register loaded vehicle</a></p><p><a href="masters.html">+ Manage master data</a></p></div></section></div></main></div></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ARC ERP | Cloud Enterprise Suite</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    :root {
+      --n: #17365d;
+      --b: #2f75b5;
+      --bg: #eef1f4;
+      --line: #c5d0da;
+      --green: #548235;
+      --red: #a61c00;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: #263746; font: 13px "Segoe UI", Tahoma, Arial, sans-serif; }
+    .top { height: 52px; background: var(--n); color: #fff; display: flex; align-items: center; padding: 0 22px; border-bottom: 3px solid #5b9bd5; position: sticky; top: 0; z-index: 100; }
+    .brand { font-size: 20px; font-weight: 700; margin-right: 30px; letter-spacing: 0.5px; }
+    .nav { display: flex; height: 100%; }
+    .nav a { color: #fff; text-decoration: none; padding: 17px 13px; border-left: 1px solid #355579; cursor: pointer; user-select: none; }
+    .nav a:hover, .nav a.active { background: var(--b); }
+    .user { margin-left: auto; color: #dbe8f5; display: flex; align-items: center; gap: 8px; }
+    .shell { display: flex; min-height: calc(100vh - 52px); }
+    aside { width: 215px; background: #e2e8ef; border-right: 1px solid #b9c5d0; padding: 14px 0; flex-shrink: 0; }
+    .side-title { padding: 8px 16px; color: #536575; text-transform: uppercase; font-weight: 700; font-size: 11px; }
+    .side-link { display: block; padding: 11px 16px; color: #30485d; text-decoration: none; border-bottom: 1px solid #d0d8df; cursor: pointer; user-select: none; }
+    .side-link:hover, .side-link.active { background: #c9dced; border-left: 4px solid var(--b); padding-left: 12px; font-weight: 600; color: var(--n); }
+    .main { flex: 1; padding: 18px 22px; overflow-x: hidden; }
+    .crumb { color: #667786; margin-bottom: 12px; }
+    .title { background: #fff; border: 1px solid var(--line); border-left: 5px solid var(--b); padding: 12px 15px; margin-bottom: 14px; }
+    .title h1 { font-size: 20px; margin: 0 0 4px; font-weight: 600; color: var(--n); }
+    .title small { color: #667786; }
+    .toolbar { background: #d9e6f2; border: 1px solid #b6c9db; padding: 9px 12px; color: var(--n); font-weight: 700; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
+    .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 14px; }
+    .card { background: #fff; border: 1px solid var(--line); padding: 18px; }
+    .card .label { color: #667786; text-transform: uppercase; font-size: 11px; font-weight: 700; }
+    .card .num { font-size: 30px; font-weight: 600; color: var(--n); margin: 8px 0; }
+    .card a { color: var(--b); text-decoration: none; font-weight: 600; cursor: pointer; }
+    .layout { display: grid; grid-template-columns: 1fr 1.55fr; gap: 14px; }
+    .grid-dashboard { display: grid; grid-template-columns: 1.3fr 1fr; gap: 14px; }
+    .panel { background: #fff; border: 1px solid var(--line); border-radius: 2px; margin-bottom: 14px; }
+    .panel h3, .panel-title { margin: 0; padding: 10px 12px; background: linear-gradient(#f8fafc, #dce7f1); border-bottom: 1px solid var(--line); font-size: 14px; color: var(--n); font-weight: 700; }
+    .body, .panel-body { padding: 13px; }
+    .form, .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    label { display: block; font-weight: 600; color: #435666; margin-bottom: 4px; }
+    input, select, textarea, button { width: 100%; font: 13px "Segoe UI", Tahoma, Arial, sans-serif; }
+    input, select, textarea { height: 32px; padding: 5px 7px; border: 1px solid #aebdca; border-radius: 2px; background: #fff; }
+    textarea { height: 60px; resize: vertical; }
+    .full { grid-column: 1 / -1; }
+    .btn { height: 32px; background: var(--b); color: #fff; border: 1px solid #245a8d; border-radius: 2px; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+    .btn:hover { opacity: 0.92; }
+    .btn.green { background: var(--green); border-color: #3e6527; }
+    .btn.red { background: var(--red); border-color: #7e1600; }
+    .export { display: flex; gap: 7px; margin-top: 12px; }
+    .export button { height: 30px; font-size: 12px; }
+    .pdf { background: #a61c00; border-color: #7e1600; }
+    .mail { background: #bf7d00; border-color: #925f00; }
+    .wa { background: #38761d; border-color: #274e13; }
+    table { width: 100%; border-collapse: collapse; min-width: 600px; }
+    th, td { padding: 8px; border: 1px solid #d0d9e1; text-align: left; }
+    th { background: #d9e6f2; color: var(--n); font-weight: 700; }
+    tbody tr:nth-child(even) td { background: #f6f8fa; }
+    tbody tr:hover td { background: #fff7d6; }
+    .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
+    .summary div { border: 1px solid #b6c9db; background: #edf4fa; padding: 9px; text-align: center; }
+    .summary b { display: block; font-size: 18px; color: var(--n); margin-top: 4px; }
+    .tag { padding: 3px 7px; font-weight: 700; font-size: 11px; border-radius: 2px; }
+    .tag-delivered { background: #d9ead3; color: #38761d; }
+    .tag-transit { background: #fff2cc; color: #7f6000; }
+    .action-btn { padding: 3px 8px; border: 1px solid #8aa2b8; background: #edf3f8; color: #17365d; border-radius: 2px; cursor: pointer; font-size: 11px; margin-right: 4px; }
+    .action-btn.del { color: var(--red); }
+    .table-wrap { overflow-x: auto; }
+    .select2-container { width: 100% !important; }
+    .select2-container--default .select2-selection--single { height: 32px !important; border: 1px solid #aebdca !important; border-radius: 2px !important; }
+    .select2-container--default .select2-selection--single .select2-selection__rendered { line-height: 30px !important; font-size: 13px; }
+    .tab-page { display: none; }
+    .tab-page.active { display: block; }
+    @media (max-width: 900px) {
+      aside { display: none; }
+      .layout, .grid-dashboard { grid-template-columns: 1fr; }
+      .cards { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 550px) {
+      .cards, .form, .form-grid, .summary { grid-template-columns: 1fr; }
+      .export { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header class="top">
+    <div class="brand">ARC ERP</div>
+    <nav class="nav">
+      <a class="nav-btn active" data-tab="page-dashboard">Dashboard</a>
+      <a class="nav-btn" data-tab="page-diesel">Diesel</a>
+      <a class="nav-btn" data-tab="page-material">Material</a>
+      <a class="nav-btn" data-tab="page-loaded">Loaded Vehicles</a>
+      <a class="nav-btn" data-tab="page-masters">Masters</a>
+    </nav>
+    <div class="user">
+      <span style="display:inline-block; width:8px; height:8px; background:#4ade80; border-radius:50%"></span>
+      <span>Live Cloud Active</span>
+    </div>
+  </header>
+
+  <div class="shell">
+    <!-- Sidebar Navigation[cite: 8, 9, 10, 11, 12] -->
+    <aside>
+      <div class="side-title">Operations</div>
+      <a class="side-link active" data-tab="page-dashboard">Control Dashboard</a>
+      <a class="side-link" data-tab="page-diesel">Diesel Consumption</a>
+      <a class="side-link" data-tab="page-material">Material Consumption</a>
+      <a class="side-link" data-tab="page-loaded">Vehicle Dispatch</a>
+      <div class="side-title">Administration</div>
+      <a class="side-link" data-tab="page-masters">Master Data</a>
+    </aside>
+
+    <main class="main">
+
+      <!-- ================= 1. DASHBOARD PAGE ================= -->
+      <section id="page-dashboard" class="tab-page active">
+        <div class="crumb">Home / Dashboard</div>
+        <section class="title">
+          <h1>ARC Fleet & Asset Management</h1>
+          <small>Operational overview and quick access to daily ERP activities.</small>
+        </section>
+
+        <div class="toolbar">
+          <span>Live Cloud Operational Status</span>
+          <span id="dashLiveDate" style="font-weight:400"></span>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <div class="label">Total Vehicles</div>
+            <div class="num" id="statVehicles">0</div>
+            <a class="nav-btn" data-tab="page-masters">View vehicle master &rarr;</a>
+          </div>
+          <div class="card">
+            <div class="label">Diesel Entries</div>
+            <div class="num" id="statDiesel">0</div>
+            <a class="nav-btn" data-tab="page-diesel">Open diesel register &rarr;</a>
+          </div>
+          <div class="card">
+            <div class="label">Material Entries</div>
+            <div class="num" id="statMaterial">0</div>
+            <a class="nav-btn" data-tab="page-material">Open material register &rarr;</a>
+          </div>
+          <div class="card">
+            <div class="label">Active Sites</div>
+            <div class="num" id="statSites">0</div>
+            <a class="nav-btn" data-tab="page-masters">View site master &rarr;</a>
+          </div>
+        </div>
+
+        <div class="grid-dashboard">
+          <section class="panel">
+            <h3>Recent Vehicle Dispatches</h3>
+            <div class="panel-body table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Date</th><th>Vehicle</th><th>Material</th><th>Destination</th><th>Status</th></tr>
+                </thead>
+                <tbody id="dashDispatchTbody">
+                  <tr><td colspan="5" style="text-align:center;color:#888;">Loading real-time transactions...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel">
+            <h3>Quick Actions</h3>
+            <div class="panel-body">
+              <p><a class="nav-btn" data-tab="page-diesel" style="color:var(--b);font-weight:600;cursor:pointer;">+ Enter diesel consumption</a></p>
+              <p><a class="nav-btn" data-tab="page-material" style="color:var(--b);font-weight:600;cursor:pointer;">+ Enter material consumption</a></p>
+              <p><a class="nav-btn" data-tab="page-loaded" style="color:var(--b);font-weight:600;cursor:pointer;">+ Register loaded vehicle</a></p>
+              <p><a class="nav-btn" data-tab="page-masters" style="color:var(--b);font-weight:600;cursor:pointer;">+ Manage master records</a></p>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ================= 2. DIESEL PAGE ================= -->
+      <section id="page-diesel" class="tab-page">
+        <div class="crumb">Home / Operations / Diesel Consumption</div>
+        <section class="title">
+          <h1>Diesel Consumption Register</h1>
+          <small>Record fuel issues and view vehicle-wise opening, consumption, closing, and balance.</small>
+        </section>
+
+        <div class="layout">
+          <section class="panel">
+            <h3>Diesel Entry</h3>
+            <div class="body">
+              <form id="dieselForm" class="form" onsubmit="return false;">
+                <div>
+                  <label>Vehicle Number</label>
+                  <select id="d_vehicle" class="searchable" required><option value="">Select vehicle</option></select>
+                </div>
+                <div>
+                  <label>Driver Name</label>
+                  <select id="d_driver" class="searchable" required><option value="">Select driver</option></select>
+                </div>
+                <div>
+                  <label>Date</label>
+                  <input id="d_date" type="date" required />
+                </div>
+                <div>
+                  <label>Diesel (Liters)</label>
+                  <input id="d_liters" type="number" step="any" placeholder="60" required />
+                </div>
+                <div>
+                  <label>Opening Stock (L)</label>
+                  <input id="d_opening" type="number" step="any" placeholder="100" required />
+                </div>
+                <div>
+                  <label>Odometer Reading</label>
+                  <input id="d_odometer" type="number" step="any" placeholder="15640" />
+                </div>
+                <div class="full">
+                  <label>Site / Location</label>
+                  <select id="d_site" class="searchable"><option value="">Select Site</option></select>
+                </div>
+                <div class="full">
+                  <label>Remarks</label>
+                  <textarea id="d_remarks" placeholder="Regular vehicle movement."></textarea>
+                </div>
+                <div class="full">
+                  <button class="btn" id="btnSaveDiesel">Save Diesel Entry</button>
+                </div>
+              </form>
+            </div>
+          </section>
+
+          <section class="panel">
+            <h3>Diesel Report</h3>
+            <div class="body">
+              <div class="form" style="margin-bottom:12px">
+                <div>
+                  <label>From Date</label>
+                  <input id="d_filter_from" type="date" />
+                </div>
+                <div>
+                  <label>To Date</label>
+                  <input id="d_filter_to" type="date" />
+                </div>
+                <div>
+                  <label>Vehicle Filter</label>
+                  <select id="d_filter_veh" class="searchable"><option value="">All Vehicles</option></select>
+                </div>
+                <div>
+                  <label>&nbsp;</label>
+                  <button class="btn" id="btnFilterDiesel">Apply Filter</button>
+                </div>
+              </div>
+
+              <div class="table-wrap">
+                <table id="dieselReportTable">
+                  <thead>
+                    <tr><th>Date</th><th>Vehicle</th><th>Driver</th><th>Opening (L)</th><th>Consumed (L)</th><th>Closing (L)</th><th>Balance (L)</th><th>Action</th></tr>
+                  </thead>
+                  <tbody id="dieselTableBody"></tbody>
+                </table>
+              </div>
+
+              <div class="summary">
+                <div>Total Opening<b id="openTotal">0</b></div>
+                <div>Total Consumed<b id="usedTotal">0</b></div>
+                <div>Total Closing<b id="closeTotal">0</b></div>
+                <div>Overall Balance<b id="balanceTotal">0</b></div>
+              </div>
+
+              <div class="export">
+                <button class="btn pdf" onclick="exportReportToPDF('dieselReportTable', 'arc-diesel-report.pdf')">Export PDF</button>
+                <button class="btn mail" onclick="sendMailReport('ARC Diesel Report')">Send Email</button>
+                <button class="btn wa" onclick="sendWhatsAppReport('Diesel')">Share WhatsApp</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ================= 3. MATERIAL PAGE[cite: 12] ================= -->
+      <section id="page-material" class="tab-page">
+        <div class="crumb">Home / Operations / Material Consumption</div>
+        <section class="title">
+          <h1>Material Consumption Register</h1>
+          <small>Record raw materials (Sand, Cement, 10mm, 20mm) and issue tracking.</small>
+        </section>
+
+        <div class="layout">
+          <section class="panel">
+            <h3>Material Consumption Entry</h3>
+            <div class="body">
+              <form id="materialForm" class="form" onsubmit="return false;">
+                <div class="full">
+                  <label>Material</label>
+                  <select id="m_material" class="searchable" required><option value="">Select Material</option></select>
+                </div>
+                <div>
+                  <label>Quantity</label>
+                  <input id="m_qty" type="number" step="any" placeholder="250" required />
+                </div>
+                <div>
+                  <label>Unit</label>
+                  <select id="m_unit" class="searchable">
+                    <option>Ton</option><option>Bag</option><option>Cubic Meter</option><option>CFT</option><option>Liter</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Date</label>
+                  <input id="m_date" type="date" required />
+                </div>
+                <div>
+                  <label>Vehicle</label>
+                  <select id="m_vehicle" class="searchable"><option value="">Select Vehicle</option></select>
+                </div>
+                <div class="full">
+                  <label>Site / Location</label>
+                  <select id="m_site" class="searchable"><option value="">Select Site</option></select>
+                </div>
+                <div class="full">
+                  <label>Remarks</label>
+                  <textarea id="m_remarks" placeholder="Batching plant / site work usage"></textarea>
+                </div>
+                <div class="full">
+                  <button class="btn" id="btnSaveMaterial">Save Material Entry</button>
+                </div>
+              </form>
+            </div>
+          </section>
+
+          <section class="panel">
+            <h3>Material Consumption Report</h3>
+            <div class="body">
+              <div class="table-wrap">
+                <table id="materialReportTable">
+                  <thead>
+                    <tr><th>Date</th><th>Material</th><th>Qty</th><th>Unit</th><th>Vehicle</th><th>Site</th><th>Action</th></tr>
+                  </thead>
+                  <tbody id="materialTableBody"></tbody>
+                </table>
+              </div>
+              <div class="export">
+                <button class="btn pdf" onclick="exportReportToPDF('materialReportTable', 'material-consumption-report.pdf')">Export PDF</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ================= 4. LOADED VEHICLES PAGE[cite: 10] ================= -->
+      <section id="page-loaded" class="tab-page">
+        <div class="crumb">Home / Operations / Loaded Vehicles</div>
+        <section class="title">
+          <h1>Loaded Vehicle Register</h1>
+          <small>Record dispatches, material quantities, source yards, and receiving sites.</small>
+        </section>
+
+        <div class="layout">
+          <section class="panel">
+            <h3>Vehicle Load Entry</h3>
+            <div class="body">
+              <form id="loadedForm" class="form" onsubmit="return false;">
+                <div>
+                  <label>Vehicle Number</label>
+                  <select id="l_vehicle" class="searchable" required><option value="">Select vehicle</option></select>
+                </div>
+                <div>
+                  <label>Driver Name</label>
+                  <select id="l_driver" class="searchable" required><option value="">Select driver</option></select>
+                </div>
+                <div>
+                  <label>Material</label>
+                  <select id="l_material" class="searchable" required><option value="">Select Material</option></select>
+                </div>
+                <div>
+                  <label>Quantity</label>
+                  <input id="l_qty" type="number" step="any" placeholder="12" required />
+                </div>
+                <div>
+                  <label>Unit</label>
+                  <select id="l_unit" class="searchable"><option>Ton</option><option>Bag</option><option>Cubic Meter</option><option>CFT</option></select>
+                </div>
+                <div>
+                  <label>Dispatch Date</label>
+                  <input id="l_date" type="date" required />
+                </div>
+                <div>
+                  <label>From Site (Loading)</label>
+                  <select id="l_from" class="searchable"><option value="">Select source</option></select>
+                </div>
+                <div>
+                  <label>Unload Site (Destination)</label>
+                  <select id="l_to" class="searchable"><option value="">Select destination</option></select>
+                </div>
+                <div>
+                  <label>Status</label>
+                  <select id="l_status" class="searchable"><option value="Delivered">Delivered</option><option value="In Transit">In Transit</option></select>
+                </div>
+                <div class="full">
+                  <label>Remarks</label>
+                  <textarea id="l_remarks" placeholder="Dispatched for site work."></textarea>
+                </div>
+                <div class="full">
+                  <button class="btn" id="btnSaveLoaded">Save Vehicle Load Entry</button>
+                </div>
+              </form>
+            </div>
+          </section>
+
+          <section class="panel">
+            <h3>Vehicle Movement Report</h3>
+            <div class="body">
+              <div class="table-wrap">
+                <table id="loadedReportTable">
+                  <thead>
+                    <tr><th>Date</th><th>Vehicle</th><th>Driver</th><th>Material</th><th>Qty</th><th>From</th><th>To</th><th>Status</th><th>Action</th></tr>
+                  </thead>
+                  <tbody id="loadedTableBody"></tbody>
+                </table>
+              </div>
+              <div class="export">
+                <button class="btn pdf" onclick="exportReportToPDF('loadedReportTable', 'vehicle-dispatch-report.pdf')">Export PDF</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ================= 5. MASTER DATA MANAGEMENT[cite: 11] ================= -->
+      <section id="page-masters" class="tab-page">
+        <div class="crumb">Home / Masters</div>
+        <section class="title">
+          <h1>Master Data Management</h1>
+          <small>Maintain master assets, drivers, sites, and material catalogs used across ERP entries.</small>
+        </section>
+
+        <!-- Vehicle Master[cite: 11] -->
+        <div class="layout" style="margin-bottom:14px">
+          <section class="panel">
+            <div class="panel-title">Vehicle Entry</div>
+            <div class="body">
+              <div class="form-grid">
+                <div class="full"><label>Vehicle Number</label><input id="m_v_num" placeholder="CG-04-LL-5191" /></div>
+                <div class="full"><label>Vehicle / Machine Type</label>
+                  <select id="m_v_type" class="searchable">
+                    <option value="">Select Type</option><option>Transit Mixer (TM)</option><option>Hywa / Tipper</option><option>JCB / Excavator</option><option>Poclan</option><option>Hydra Crane</option><option>Tractor</option><option>Compactor</option><option>Generator / Pump</option>
+                  </select>
+                </div>
+                <div class="full"><label>Assigned Driver</label><select id="m_v_driver" class="searchable"><option value="">Select Driver</option></select></div>
+                <div class="full actions"><button class="btn green" id="btnSaveMasterVehicle">Save Vehicle</button></div>
+              </div>
+            </div>
+          </section>
+          <section class="panel">
+            <div class="panel-title">Vehicle Master List</div>
+            <div class="body table-wrap">
+              <table><thead><tr><th>Vehicle No</th><th>Type</th><th>Driver</th><th>Action</th></tr></thead><tbody id="masterVehiclesTbody"></tbody></table>
+            </div>
+          </section>
+        </div>
+
+        <!-- Driver Master[cite: 11] -->
+        <div class="layout" style="margin-bottom:14px">
+          <section class="panel">
+            <div class="panel-title">Driver Entry</div>
+            <div class="body">
+              <div class="form-grid">
+                <div class="full"><label>Driver Name</label><input id="m_d_name" placeholder="Rakesh Kumar" /></div>
+                <div><label>Mobile Number</label><input id="m_d_mobile" placeholder="+91 9876543210" /></div>
+                <div><label>License Number</label><input id="m_d_lic" placeholder="DL-01-2022-9988" /></div>
+                <div class="full"><label>Status</label><select id="m_d_status" class="searchable"><option>Active</option><option>On Leave</option><option>Inactive</option></select></div>
+                <div class="full actions"><button class="btn green" id="btnSaveMasterDriver">Save Driver</button></div>
+              </div>
+            </div>
+          </section>
+          <section class="panel">
+            <div class="panel-title">Driver Master List</div>
+            <div class="body table-wrap">
+              <table><thead><tr><th>Driver Name</th><th>Mobile</th><th>License</th><th>Status</th><th>Action</th></tr></thead><tbody id="masterDriversTbody"></tbody></table>
+            </div>
+          </section>
+        </div>
+
+        <!-- Material Master[cite: 11] -->
+        <div class="layout" style="margin-bottom:14px">
+          <section class="panel">
+            <div class="panel-title">Material Entry</div>
+            <div class="body">
+              <div class="form-grid">
+                <div class="full"><label>Material Name</label><input id="m_m_name" placeholder="River Sand / 20mm Metal" /></div>
+                <div class="full"><label>Default Unit</label><select id="m_m_unit" class="searchable"><option>Ton</option><option>Bag</option><option>Cubic Meter</option><option>CFT</option><option>Liter</option></select></div>
+                <div class="full actions"><button class="btn green" id="btnSaveMasterMaterial">Save Material</button></div>
+              </div>
+            </div>
+          </section>
+          <section class="panel">
+            <div class="panel-title">Material Master List</div>
+            <div class="body table-wrap">
+              <table><thead><tr><th>Material</th><th>Unit</th><th>Action</th></tr></thead><tbody id="masterMaterialsTbody"></tbody></table>
+            </div>
+          </section>
+        </div>
+
+        <!-- Site Master[cite: 11] -->
+        <section class="panel">
+          <div class="panel-title">Site Master</div>
+          <div class="body">
+            <div class="form-grid">
+              <div><label>Site / Yard Name</label><input id="m_s_name" placeholder="DONDE / RMC Yard / Site A" /></div>
+              <div><label>Location Details</label><input id="m_s_loc" placeholder="Industrial Area, Phase 2" /></div>
+              <div class="full actions"><button class="btn green" id="btnSaveMasterSite">Save Site</button></div>
+            </div>
+            <div class="table-wrap" style="margin-top:14px">
+              <table><thead><tr><th>Site Name</th><th>Location</th><th>Action</th></tr></thead><tbody id="masterSitesTbody"></tbody></table>
+            </div>
+          </div>
+        </section>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- jQuery & Select2[cite: 8, 11] -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+  <!-- FIREBASE MODULAR SDK LOGIC[cite: 8, 9, 10, 11, 12] -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+    import { 
+      getFirestore, collection, addDoc, getDocs, deleteDoc, doc, 
+      query, orderBy, limit, serverTimestamp, onSnapshot 
+    } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+    // 1. YOUR FIREBASE PROJECT CONFIGURATION
+    const firebaseConfig = {
+  apiKey: "AIzaSyDcZ1whqZ6oasoPYwQvl6koipitnZKbJ-0",
+  authDomain: "arc-site-details.firebaseapp.com",
+  projectId: "arc-site-details",
+  storageBucket: "arc-site-details.firebasestorage.app",
+  messagingSenderId: "98878821386",
+  appId: "1:98878821386:web:e28f7c9632f7793000fbf3",
+  measurementId: "G-8D0Y6HG23R"
+};
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Initialize UI controls
+    $(function() {
+      $('.searchable').select2({ placeholder: 'Select...', allowClear: true, width: '100%' });
+      const today = new Date().toISOString().split('T')[0];
+      $('#d_date, #m_date, #l_date').val(today);
+      $('#dashLiveDate').text(new Date().toDateString());
+    });
+
+    // SPA Tab Navigation Router
+    function navigateToTab(tabId) {
+      $('.tab-page').removeClass('active');
+      $('#' + tabId).addClass('active');
+      $('.nav-btn, .side-link').removeClass('active');
+      $(`[data-tab="${tabId}"]`).addClass('active');
+      window.scrollTo(0, 0);
+    }
+    window.navigateToTab = navigateToTab;
+
+    $(document).on('click', '[data-tab]', function(e) {
+      e.preventDefault();
+      navigateToTab($(this).data('tab'));
+    });
+
+    // ----------------------------------------------------
+    // REALTIME MASTERS SYNCHRONIZATION
+    // ----------------------------------------------------
+    let cacheVehicles = [], cacheDrivers = [], cacheMaterials = [], cacheSites = [];
+
+    // Master: Vehicles
+    onSnapshot(collection(db, "masters_vehicles"), (snap) => {
+      cacheVehicles = [];
+      const tbody = $('#masterVehiclesTbody').empty();
+      snap.forEach(d => {
+        const item = { id: d.id, ...d.data() };
+        cacheVehicles.push(item);
+        tbody.append(`<tr>
+          <td>${item.number || ''}</td>
+          <td>${item.type || ''}</td>
+          <td>${item.driver || ''}</td>
+          <td><button class="action-btn del" onclick="deleteRecord('masters_vehicles', '${item.id}')">Delete</button></td>
+        </tr>`);
+      });
+      syncDropdowns();
+      $('#statVehicles').text(cacheVehicles.length);
+    });
+
+    // Master: Drivers
+    onSnapshot(collection(db, "masters_drivers"), (snap) => {
+      cacheDrivers = [];
+      const tbody = $('#masterDriversTbody').empty();
+      snap.forEach(d => {
+        const item = { id: d.id, ...d.data() };
+        cacheDrivers.push(item);
+        const tagClass = item.status === 'Active' ? 'tag-delivered' : 'tag-transit';
+        tbody.append(`<tr>
+          <td>${item.name || ''}</td>
+          <td>${item.mobile || ''}</td>
+          <td>${item.lic || ''}</td>
+          <td><span class="tag ${tagClass}">${item.status || 'Active'}</span></td>
+          <td><button class="action-btn del" onclick="deleteRecord('masters_drivers', '${item.id}')">Delete</button></td>
+        </tr>`);
+      });
+      syncDropdowns();
+    });
+
+    // Master: Materials
+    onSnapshot(collection(db, "masters_materials"), (snap) => {
+      cacheMaterials = [];
+      const tbody = $('#masterMaterialsTbody').empty();
+      snap.forEach(d => {
+        const item = { id: d.id, ...d.data() };
+        cacheMaterials.push(item);
+        tbody.append(`<tr>
+          <td>${item.name || ''}</td>
+          <td>${item.unit || ''}</td>
+          <td><button class="action-btn del" onclick="deleteRecord('masters_materials', '${item.id}')">Delete</button></td>
+        </tr>`);
+      });
+      syncDropdowns();
+    });
+
+    // Master: Sites
+    onSnapshot(collection(db, "masters_sites"), (snap) => {
+      cacheSites = [];
+      const tbody = $('#masterSitesTbody').empty();
+      snap.forEach(d => {
+        const item = { id: d.id, ...d.data() };
+        cacheSites.push(item);
+        tbody.append(`<tr>
+          <td>${item.name || ''}</td>
+          <td>${item.loc || ''}</td>
+          <td><button class="action-btn del" onclick="deleteRecord('masters_sites', '${item.id}')">Delete</button></td>
+        </tr>`);
+      });
+      syncDropdowns();
+      $('#statSites').text(cacheSites.length);
+    });
+
+    // Refresh dynamic <select> options with master data
+    function syncDropdowns() {
+      populateOptions('#d_vehicle, #m_vehicle, #l_vehicle, #d_filter_veh', cacheVehicles, 'number', 'number');
+      populateOptions('#d_driver, #l_driver, #m_v_driver', cacheDrivers, 'name', 'name');
+      populateOptions('#m_material, #l_material', cacheMaterials, 'name', 'name');
+      populateOptions('#d_site, #m_site, #l_from, #l_to', cacheSites, 'name', 'name');
+    }
+
+    function populateOptions(selector, list, valProp, textProp) {
+      $(selector).each(function() {
+        const curVal = $(this).val();
+        const placeholder = $(this).find('option:first').text() \vert{}\vert{} 'Select';$(this).empty().append(new Option(placeholder, ''));
+        list.forEach(item => {
+          $(this).append(new Option(item[textProp], item[valProp]));
+        });
+        if (curVal) $(this).val(curVal);
+      });
+    }
+
+    // Generic Delete Record
+    window.deleteRecord = async function(coll, id) {
+      if (!confirm('Are you sure you want to delete this record?')) return;
+      try {
+        await deleteDoc(doc(db, coll, id));
+      } catch (err) {
+        alert('Delete failed: ' + err.message);
+      }
+    };
+
+    // ----------------------------------------------------
+    // SAVING MASTER ENTRIES
+    // ----------------------------------------------------
+    $('#btnSaveMasterVehicle').on('click', async () => {
+      const number = $('#m_v_num').val().trim();
+      const type = $('#m_v_type').val();
+      const driver = $('#m_v_driver').val();
+      if (!number || !type) return alert('Provide Vehicle Number and Type');
+      await addDoc(collection(db, 'masters_vehicles'), { number, type, driver, createdAt: serverTimestamp() });
+      $('#m_v_num').val('');
+      $('#m_v_type, #m_v_driver').val(null).trigger('change');
+      alert('Vehicle Master saved.');
+    });
+
+    $('#btnSaveMasterDriver').on('click', async () => {
+      const name = $('#m_d_name').val().trim();
+      const mobile = $('#m_d_mobile').val().trim();
+      const lic = $('#m_d_lic').val().trim();
+      const status = $('#m_d_status').val();
+      if (!name || !mobile) return alert('Provide Driver Name & Phone');
+      await addDoc(collection(db, 'masters_drivers'), { name, mobile, lic, status, createdAt: serverTimestamp() });
+      $('#m_d_name, #m_d_mobile, #m_d_lic').val('');
+      alert('Driver Master saved.');
+    });
+
+    $('#btnSaveMasterMaterial').on('click', async () => {
+      const name = $('#m_m_name').val().trim();
+      const unit = $('#m_m_unit').val();
+      if (!name) return alert('Provide Material Name');
+      await addDoc(collection(db, 'masters_materials'), { name, unit, createdAt: serverTimestamp() });
+      $('#m_m_name').val('');
+      alert('Material Master saved.');
+    });
+
+    $('#btnSaveMasterSite').on('click', async () => {
+      const name = $('#m_s_name').val().trim();
+      const loc = $('#m_s_loc').val().trim();
+      if (!name) return alert('Provide Site Name');
+      await addDoc(collection(db, 'masters_sites'), { name, loc, createdAt: serverTimestamp() });
+      $('#m_s_name, #m_s_loc').val('');
+      alert('Site Master saved.');
+    });
+
+    // ----------------------------------------------------
+    // DIESEL REGISTER REALTIME TRANSACTIONS[cite: 8]
+    // ----------------------------------------------------
+    $('#btnSaveDiesel').on('click', async () => {
+      const vehicle = $('#d_vehicle').val();
+      const driver = $('#d_driver').val();
+      const date = $('#d_date').val();
+      const liters = parseFloat($('#d_liters').val()) || 0;
+      const opening = parseFloat($('#d_opening').val()) || 0;
+      const odometer = parseFloat($('#d_odometer').val()) || 0;
+      const site = $('#d_site').val();
+      const remarks = $('#d_remarks').val();
+
+      if (!vehicle || !driver || !liters) return alert('Please fill Vehicle, Driver and Liters.');
+      const closing = opening - liters;
+
+      await addDoc(collection(db, "diesel_entries"), {
+        vehicle, driver, date, liters, opening, closing,
+        balance: closing, odometer, site, remarks, createdAt: serverTimestamp()
+      });
+
+      $('#d_liters, #d_opening, #d_odometer, #d_remarks').val('');
+      alert('Diesel Entry Saved.');
+    });
+
+    onSnapshot(query(collection(db, "diesel_entries"), orderBy("date", "desc")), (snap) => {
+      const tbody = $('#dieselTableBody').empty();
+      let openTot = 0, usedTot = 0, closeTot = 0;
+      $('#statDiesel').text(snap.size);
+
+      snap.forEach(d => {
+        const it = { id: d.id, ...d.data() };
+        openTot += (it.opening || 0);
+        usedTot += (it.liters || 0);
+        closeTot += (it.closing || 0);
+
+        tbody.append(`<tr>
+          <td>${it.date || ''}</td>
+          <td>${it.vehicle || ''}</td>
+          <td>${it.driver || ''}</td>
+          <td>${it.opening || 0}</td>
+          <td>${it.liters || 0}</td>
+          <td>${it.closing || 0}</td>
+          <td>${it.balance >= 0 ? '+' + it.balance : it.balance}</td>
+          <td><button class="action-btn del" onclick="deleteRecord('diesel_entries', '${it.id}')">Del</button></td>
+        </tr>`);
+      });
+
+      $('#openTotal').text(openTot.toFixed(1));
+      $('#usedTotal').text(usedTot.toFixed(1));
+      $('#closeTotal').text(closeTot.toFixed(1));
+      $('#balanceTotal').text((closeTot >= 0 ? '+' : '') + closeTot.toFixed(1));
+    });
+
+    // ----------------------------------------------------
+    // MATERIAL CONSUMPTION REALTIME TRANSACTIONS[cite: 12]
+    // ----------------------------------------------------
+    $('#btnSaveMaterial').on('click', async () => {
+      const material = $('#m_material').val();
+      const qty = parseFloat($('#m_qty').val()) || 0;
+      const unit = $('#m_unit').val();
+      const date = $('#m_date').val();
+      const vehicle = $('#m_vehicle').val();
+      const site = $('#m_site').val();
+      const remarks = $('#m_remarks').val();
+
+      if (!material || !qty) return alert('Select Material and Quantity.');
+      await addDoc(collection(db, "material_consumption"), {
+        material, qty, unit, date, vehicle, site, remarks, createdAt: serverTimestamp()
+      });
+
+      $('#m_qty, #m_remarks').val('');
+      alert('Material consumption entry saved.');
+    });
+
+    onSnapshot(query(collection(db, "material_consumption"), orderBy("date", "desc")), (snap) => {
+      const tbody = $('#materialTableBody').empty();
+      $('#statMaterial').text(snap.size);
+
+      snap.forEach(d => {
+        const it = { id: d.id, ...d.data() };
+        tbody.append(`<tr>
+          <td>${it.date || ''}</td>
+          <td>${it.material || ''}</td>
+          <td>${it.qty || 0}</td>
+          <td>${it.unit || ''}</td>
+          <td>${it.vehicle || 'Yard'}</td>
+          <td>${it.site || ''}</td>
+          <td><button class="action-btn del" onclick="deleteRecord('material_consumption', '${it.id}')">Del</button></td>
+        </tr>`);
+      });
+    });
+
+    // ----------------------------------------------------
+    // VEHICLE DISPATCH REALTIME TRANSACTIONS[cite: 10]
+    // ----------------------------------------------------
+    $('#btnSaveLoaded').on('click', async () => {
+      const vehicle = $('#l_vehicle').val();
+      const driver = $('#l_driver').val();
+      const material = $('#l_material').val();
+      const qty = parseFloat($('#l_qty').val()) || 0;
+      const unit = $('#l_unit').val();
+      const date = $('#l_date').val();
+      const from = $('#l_from').val();
+      const to = $('#l_to').val();
+      const status = $('#l_status').val();
+      const remarks = $('#l_remarks').val();
+
+      if (!vehicle || !material || !qty) return alert('Vehicle, Material and Quantity required.');
+
+      await addDoc(collection(db, "loaded_vehicles"), {
+        vehicle, driver, material, qty, unit, date, from, to, status, remarks, createdAt: serverTimestamp()
+      });
+
+      $('#l_qty, #l_remarks').val('');
+      alert('Vehicle load dispatch saved.');
+    });
+
+    onSnapshot(query(collection(db, "loaded_vehicles"), orderBy("date", "desc")), (snap) => {
+      const tbody = $('#loadedTableBody').empty();
+      const dashTbody = $('#dashDispatchTbody').empty();
+      let index = 0;
+
+      snap.forEach(d => {
+        const it = { id: d.id, ...d.data() };
+        const tagClass = it.status === 'Delivered' ? 'tag-delivered' : 'tag-transit';
+
+        tbody.append(`<tr>
+          <td>${it.date || ''}</td>
+          <td>${it.vehicle || ''}</td>
+          <td>${it.driver || ''}</td>
+          <td>${it.material || ''}</td>
+          <td>${it.qty} ${it.unit}</td>
+          <td>${it.from || ''}</td>
+          <td>${it.to || ''}</td>
+          <td><span class="tag ${tagClass}">${it.status || 'In Transit'}</span></td>
+          <td><button class="action-btn del" onclick="deleteRecord('loaded_vehicles', '${it.id}')">Del</button></td>
+        </tr>`);
+
+        // Populate Top 5 Dispatches on Main Dashboard[cite: 9]
+        if (index < 5) {
+          dashTbody.append(`<tr>
+            <td>${it.date || ''}</td>
+            <td>${it.vehicle || ''}</td>
+            <td>${it.material || ''} (${it.qty} ${it.unit})</td>
+            <td>${it.to || ''}</td>
+            <td><span class="tag ${tagClass}">${it.status || 'In Transit'}</span></td>
+          </tr>`);
+          index++;
+        }
+      });
+      if (snap.empty) {
+        dashTbody.html('<tr><td colspan="5" style="text-align:center;color:#888;">No recent dispatches logged.</td></tr>');
+      }
+    });
+
+    // ----------------------------------------------------
+    // EXPORT UTILITIES (PDF, Email, WhatsApp)[cite: 8]
+    // ----------------------------------------------------
+    window.exportReportToPDF = function(tableId, filename) {
+      const el = document.getElementById(tableId);
+      html2pdf().set({
+        margin: 10,
+        filename: filename,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { orientation: 'landscape', format: 'a4' }
+      }).from(el).save();
+    };
+
+    window.sendMailReport = function(subject) {
+      location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent("Please find attached operational report generated from ARC ERP.")}`;
+    };
+
+    window.sendWhatsAppReport = function(type) {
+      const txt = `*ARC ERP Summary Report*\nType: ${type}\nTotal Consumption: ${$('#usedTotal').text()} L\nCurrent Balance: ${$('#balanceTotal').text()} L`;
+      window.open('https://wa.me/?text=' + encodeURIComponent(txt), '_blank');
+    };
+  </script>
+</body>
+</html>
